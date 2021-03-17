@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord.ext.commands import has_permissions, MissingPermissions
 
 class MemberControl(commands.Cog):
 
@@ -14,6 +13,7 @@ class MemberControl(commands.Cog):
         await ctx.send(f'banned {member.mention}')
 
     @commands.command()
+    @commands.has_permissions(ban_members=True, kick_members=True)
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()
         member_name, member_discriminator = member.split('#')
@@ -27,10 +27,12 @@ class MemberControl(commands.Cog):
                 return
 
     @commands.command()
+    @commands.has_permissions(ban_members=True, kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason=None):
         await member.kick(reason=reason)
 
     @commands.command()
+    @commands.has_permissions(ban_members=True, kick_members=True)
     async def clear(self, ctx, amount=5):
         await ctx.channel.purge(limit=amount)
 
